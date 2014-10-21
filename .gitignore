@@ -2,6 +2,9 @@
 .AppleDouble
 .LSOverride
 
+# Octave
+.mat
+
 # Thumbnails
 ._*
 

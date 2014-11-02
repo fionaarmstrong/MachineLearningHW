@@ -12,7 +12,14 @@ figure; hold on;
 %               examples and 'ko' for the negative examples.
 %
 
-
+posIdx = find(y == 1);
+negIdx = find(y == 0);
+plot(X(posIdx, 1), X(posIdx, 2), 'k+', 'LineWidth', 2, ...
+     'MarkerSize', 7);
+plot(X(negIdx, 1), X(negIdx, 2), 'ko', 'MarkerFaceColor', 'y', ...
+     'MarkerSize', 7);
+ylabel('Exam 1 score');
+xlabel('Exam 2 score');
 
 
 

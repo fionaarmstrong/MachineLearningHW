@@ -21,7 +21,12 @@ grad = zeros(size(theta));
 %
 
 
-
+h = 1./(1+e.^(-1*(X*theta)));        % m x 1
+J = (-1/m)*((y'*log(h))+(1.-y)'*log(1.-h));
+            for i=1:length(theta),
+            grad(i) = (h-y)'*X(:,i)*(1/m);
+            
+            end;
 
 
 

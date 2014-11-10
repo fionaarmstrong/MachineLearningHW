@@ -16,6 +16,18 @@ function [J grad] = nnCostFunction(nn_params, ...
 
 % Reshape nn_params back into the parameters Theta1 and Theta2, the weight matrices
 % for our 2 layer neural network
+
+
+%====== Hard Coded Unit Test =====
+%nn_params = sec(1:1:32)';
+%input_layer_size = 2;
+%hidden_layer_size = 4;
+%num_labels = 4;
+%X = reshape(tan(1:32), 16, 2) / 5;
+%y = 1 + mod(1:16,4)';
+%lambda = 0;
+%===== Expecting J =  10.93 =====
+
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
                  hidden_layer_size, (input_layer_size + 1));
 
@@ -64,6 +76,25 @@ Theta2_grad = zeros(size(Theta2));
 
 
 
+a1 = [ones(m, 1) X]; % m x 401
+
+z2 = a1 * Theta1'; % m x 25
+a2 = sigmoid(z2); % m x 25
+a2 = [ones(m, 1) a2]; % m x 26
+
+z3 = a2 * Theta2'; % m x K
+h = sigmoid(z3); % m x K
+
+yy = repmat([1:num_labels], m, 1) == repmat(y, 1, num_labels); % m x K
+
+cost = - yy.*log(h) - (1-yy).*log(1-h); % m x K
+
+tt1 = Theta1(:, (2 : end));
+tt1 = tt1 .* tt1;
+tt2 = Theta2(:, (2 : end));
+tt2 = tt2 .* tt2;
+
+J = sum(cost(:))/m + (lambda/(2*m))*(sum(tt1(:)) + sum(tt2(:))); % scalar
 
 
 

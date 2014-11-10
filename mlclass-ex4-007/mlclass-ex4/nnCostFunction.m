@@ -75,7 +75,6 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
-
 a1 = [ones(m, 1) X]; % m x 401
 
 z2 = a1 * Theta1'; % m x 25
@@ -83,7 +82,7 @@ a2 = sigmoid(z2); % m x 25
 a2 = [ones(m, 1) a2]; % m x 26
 
 z3 = a2 * Theta2'; % m x K
-h = sigmoid(z3); % m x K
+h = sigmoid(z3); % a3 m x K
 
 yy = repmat([1:num_labels], m, 1) == repmat(y, 1, num_labels); % m x K
 
@@ -96,20 +95,23 @@ tt2 = tt2 .* tt2;
 
 J = sum(cost(:))/m + (lambda/(2*m))*(sum(tt1(:)) + sum(tt2(:))); % scalar
 
+% backpropagation
 
+d3 = h - yy; % m x K
 
+d2 = d3 * Theta2 .* sigmoidGradient([ones(size(z2,1),1) z2]);
+d2 = d2(:,2:end);
 
+D1 = d2'*a1; % Same dimension as Theta
+D2 = d3'*a2;
 
+reg1 = (lambda/m) .* Theta1;
+reg1 = [zeros(size(reg1,1),1) reg1(:,2:end)];
+reg2 = (lambda/m) .* Theta2;
+reg2 = [zeros(size(reg2,1),1) reg2(:,2:end)];
 
-
-
-
-
-
-
-
-
-
+Theta1_grad = D1./m .+ reg1;
+Theta2_grad = D2./m .+ reg2;
 
 % -------------------------------------------------------------
 
